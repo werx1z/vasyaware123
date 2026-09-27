@@ -32,7 +32,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ChickenGunTweak-dylib
-          path: |
-            .theos/obj/**/*.dylib
-            **/*.dylib
-          if-no-files-found: warn
+          path: .theos/obj/debug/arm64/ChickenGunTweak.dylib
+          if-no-files-found: error
