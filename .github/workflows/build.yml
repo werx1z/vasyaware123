@@ -1,0 +1,38 @@
+name: Build ChickenGun Tweak
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Theos
+        uses: Randomblock1/theos-action@v1
+        with:
+          theos-dir: ${{ github.workspace }}/theos
+
+      - name: Build Tweak
+        run: |
+          export THEOS=${{ github.workspace }}/theos
+          make clean
+          make
+
+      - name: Find dylib
+        run: |
+          find . -name "*.dylib" -type f
+
+      - name: Upload dylib
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChickenGunTweak-dylib
+          path: |
+            .theos/obj/**/*.dylib
+            **/*.dylib
+          if-no-files-found: warn
